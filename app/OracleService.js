@@ -10,7 +10,7 @@ const contractJson = require('../build/contracts/Oracle.json');
 const web3 = new Web3('ws://127.0.0.1:8545');
 
 // Información de direcciones de Ganache
-const addressContract = '0x1f6189cA40803ED5f573A8A2971635485C2C1fbb';
+const addressContract = '0xd15D65eeaEe7309C4B88055CA82bc43775a092b7';
 const contractInstance = new web3.eth.Contract(contractJson.abi, addressContract);
 
 const privateKey = Buffer.from('c9cd60803ff492795a0f90ebf4a09b3f99bec55add11329e54eb4b000086cc8c', 'hex');
@@ -21,7 +21,7 @@ web3.eth.getBlockNumber().then(n => listenEvent(n-1));
 
 // Función: listenEvent
 function listenEvent(lastBlock) {
-    contractInstance.events.__calbacknewData({}, {fromBlock: lastBlock, toBlock = 'latest'}, (err,event) => {
+    contractInstance.events.__callbackNewData({}, {fromBlock: lastBlock, toBlock: 'latest'}, (err,event) => {
         event ? updateData() : null;
         err ? console.log(err) : null;
     });
@@ -35,8 +35,8 @@ function updateData() {
     const url = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=DEMO_KEY';
 
     fetch(url)
-        .then(response => response.json)
-        .then(json => setDataContract(json.element_count));
+    .then(response => response.json())
+    .then(json => setDataContract(json.element_count));
 }
 
 // Funcion: setDataContract(_value)
@@ -49,7 +49,7 @@ function setDataContract(_value) {
                     gasPrice: web3.utils.toHex(web3.utils.toWei('1.4', 'gwei')),
                     gasLimit: web3.utils.toHex(gasAmount),
                     to: addressContract,
-                    value = '0x00',
+                    value : '0x00',
                     data: contractInstance.methods.setNumberAsteroids(_value).encodeABI()
                 } 
 

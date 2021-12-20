@@ -28,7 +28,7 @@ contract Oracle {
     }
 
     // Funcion para configuracion manual del número de asteroides
-    function setNumberAsterioids(uint _num) public onlyOwner {
+    function setNumberAsteroids(uint _num) public onlyOwner {
         numberAsteroids = _num;
     }
 
